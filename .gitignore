@@ -1,0 +1,8 @@
+.env
+server.log
+clean-gin
+__debug_bin
+.idea
+firebase.json
+.DS_Store
+cert

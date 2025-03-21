@@ -1,0 +1,32 @@
+services:
+  api-soundbox-dev:
+    image: docker-registry.tsmsandbox.com/api-soundbox-${IMAGES_DOCKER}:${API_SOUNDBOX_TAG}
+    container_name: api-soundbox-${API_SOUNDBOX_NAME}
+    build:
+      context: .
+      dockerfile: ./docker/web.Dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: "${SERVER_CPU_LIMIT}"
+          memory: ${SERVER_MEMORY_LIMIT}
+        reservations:
+          cpus: "${SERVER_CPU_RESERVATION}"
+          memory: ${SERVER_MEMORY_RESERVATION}
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+      - ${DEBUG_PORT}:2345
+    volumes:
+      - .:/clean_web
+      - /home/dev/certs:/clean_web/certs
+     # - /Users/username_local/Projects/Go/soundbox-api/cert:/clean_web/cert
+    env_file: .env
+    security_opt:
+      - seccomp:unconfined
+    networks:
+      - tsm_network
+
+networks:
+  tsm_network:
+    name: tsm_network
+    driver: bridge

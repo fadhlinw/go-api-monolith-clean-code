@@ -1,0 +1,12 @@
+stages:
+  - Review
+
+Code Review:
+  stage: Review
+  image: node:22.12.0
+  script:
+    - npm i @hataiit9x/gemini-review-code -g
+    - gemini-review-code -t "$GITLAB_TOKEN" -a "$API_KEY" -p "$CI_MERGE_REQUEST_PROJECT_ID" -m "$CI_MERGE_REQUEST_IID"
+  only:
+    - merge_requests
+  when: on_success
